@@ -29,10 +29,10 @@ class User extends Model {
     return compareSync(password, this.password_hash)
   }
 
-  generateToken() {
+  generateToken({ id }) {
     const { secret, expiresIn } = authConfig
 
-    return jwt.sign({ id: this.id }, secret, { expiresIn })
+    return jwt.sign({ id }, secret, { expiresIn })
   }
 }
 
