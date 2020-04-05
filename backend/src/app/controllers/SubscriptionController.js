@@ -1,7 +1,6 @@
 import { Op } from 'sequelize'
 
 import User from '../models/User'
-import File from '../models/File'
 import Meetup from '../models/Meetup'
 import Subscription from '../models/Subscription'
 
@@ -25,15 +24,14 @@ class SubscriptionController {
       attributes: ['id', 'created_at'],
       include: [
         {
-          model: Meetup,
+          association: 'meetup',
           include: [
             {
-              model: User,
+              association: 'user',
               attributes: ['id', 'name', 'email'],
             },
             {
-              model: File,
-              as: 'avatar',
+              association: 'avatar',
               attributes: ['id', 'path', 'url'],
             },
           ],
@@ -46,7 +44,7 @@ class SubscriptionController {
       ],
       limit: 10,
       offset: 10 * page - 10,
-      order: [[Meetup, 'date']],
+      order: [['meetup', 'date']],
     })
 
     return res.json({ subscriptions, total })
@@ -60,7 +58,7 @@ class SubscriptionController {
     const meetup = await Meetup.findByPk(req.params.meetupId, {
       include: [
         {
-          model: User,
+          association: 'user',
           attributes: ['name', 'email'],
         },
       ],
@@ -69,7 +67,10 @@ class SubscriptionController {
     if (!meetup) return res.status(400).json({ error: 'Meetup not found' })
 
     const subscribed = await Subscription.findOne({
-      where: { meetup_id: meetup.id, user_id: req.userId },
+      where: {
+        meetup_id: meetup.id,
+        user_id: req.userId,
+      },
     })
 
     if (meetup.user_id === req.userId) {
@@ -94,7 +95,7 @@ class SubscriptionController {
       where: { user_id: req.userId },
       include: [
         {
-          model: Meetup,
+          association: 'meetup',
           required: true,
           where: {
             date: meetup.date,
@@ -124,7 +125,9 @@ class SubscriptionController {
 
   async delete(req, res) {
     const subscription = await Subscription.findByPk(req.params.id, {
-      where: { user_id: req.userId },
+      where: {
+        user_id: req.userId,
+      },
     })
 
     if (!subscription) {

@@ -1,42 +1,33 @@
 import { Op } from 'sequelize'
-import { isBefore, startOfDay, endOfDay, parse } from 'date-fns'
+import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns'
 
-import User from '../models/User'
-import File from '../models/File'
 import Meetup from '../models/Meetup'
 
 class MeetupController {
   async index(req, res) {
-    const queryDate = req.query.date ? parse(req.query.date) : new Date()
+    const queryDate = req.query.date ? parseISO(req.query.date) : new Date()
     const page = req.query.page || 1
 
-    const total = await Meetup.count({
-      user_id: {
-        [Op.ne]: req.userId,
-      },
-    })
-
-    const where = {
-      user_id: {
-        [Op.ne]: req.userId,
-      },
-      ...(req.query.date && {
-        date: {
-          [Op.between]: [startOfDay(queryDate), endOfDay(queryDate)],
-        },
-      }),
-    }
+    const total = await Meetup.count({ user_id: { [Op.ne]: req.userId } })
 
     const meetups = await Meetup.findAll({
-      where,
+      where: {
+        user_id: {
+          [Op.ne]: req.userId,
+        },
+        ...(req.query.date && {
+          date: {
+            [Op.between]: [startOfDay(queryDate), endOfDay(queryDate)],
+          },
+        }),
+      },
       include: [
         {
-          model: User,
+          association: 'user',
           attributes: ['id', 'name', 'email'],
         },
         {
-          model: File,
-          as: 'avatar',
+          association: 'avatar',
           attributes: ['id', 'path', 'url'],
         },
       ],
@@ -56,12 +47,11 @@ class MeetupController {
       },
       include: [
         {
-          model: User,
+          association: 'user',
           attributes: ['id', 'name', 'email'],
         },
         {
-          model: File,
-          as: 'avatar',
+          association: 'avatar',
           attributes: ['id', 'path', 'url'],
         },
       ],
@@ -75,7 +65,7 @@ class MeetupController {
   async store(req, res) {
     const { date } = req.body
 
-    if (isBefore(parse(date), new Date())) {
+    if (isBefore(parseISO(date), new Date())) {
       return res.status(400).json({ error: 'Meetup date invalid' })
     }
 
@@ -98,7 +88,7 @@ class MeetupController {
       return res.status(401).json({ error: 'Meetup not found' })
     }
 
-    if (isBefore(parse(req.body.date), new Date())) {
+    if (isBefore(parseISO(req.body.date), new Date())) {
       return res.status(400).json({ error: 'Meetup date invalid' })
     }
 
@@ -111,8 +101,7 @@ class MeetupController {
     const meetup = await Meetup.findByPk(req.params.id, {
       include: [
         {
-          model: File,
-          as: 'avatar',
+          association: 'avatar',
           attributes: ['id', 'path', 'url'],
         },
       ],
