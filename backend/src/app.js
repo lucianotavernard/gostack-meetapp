@@ -8,14 +8,13 @@ import cors from 'cors'
 import 'express-async-errors'
 
 import routes from './routes'
-import appConfig from './config/app'
 
 import './database'
 
 class App {
   constructor() {
     this.server = express()
-    this.isDev = appConfig.isDev
+    this.isDev = process.env.NODE_ENV === 'development'
 
     this.middlewares()
     this.routes()
