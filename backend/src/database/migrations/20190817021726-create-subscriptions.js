@@ -9,14 +9,20 @@ module.exports = {
       },
       meetup_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'meetups', key: 'id' },
+        references: {
+          model: 'meetups',
+          key: 'id',
+        },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'users', key: 'id' },
+        references: {
+          model: 'users',
+          key: 'id',
+        },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
@@ -32,7 +38,7 @@ module.exports = {
     })
   },
 
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface.dropTable('subscriptions')
   },
 }
