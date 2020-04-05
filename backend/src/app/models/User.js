@@ -18,7 +18,7 @@ class User extends Model {
       }
     )
 
-    this.addHook('beforeSave', user => {
+    this.addHook('beforeSave', (user) => {
       if (user.password) user.password_hash = hashSync(user.password, 8)
     })
 
