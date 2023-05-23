@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="MeetApp" title="#MeetApp" src=".github/logo.png" width="250px" />
+  <img alt="MeetApp" title="#MeetApp" src=".github/logo.png" width="200px" />
 </h1>
 
 <h4 align="center">
