@@ -1,4 +1,26 @@
-# MeetApp
+<h1 align="center">
+  <img alt="MeetApp" title="#MeetApp" src=".github/logo.png" width="250px" />
+</h1>
+
+<h4 align="center">
+  🚀 MeetApp
+</h4>
+
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/lucianotavernard/gostack-meetapp">
+
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/lucianotavernard/gostack-meetapp">
+
+  <a href="https://github.com/lucianotavernard/gostack-meetapp/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/lucianotavernard/gostack-meetapp">
+  </a>
+
+  <a href="https://github.com/lucianotavernard/gostack-meetapp/issues">
+    <img alt="Repository issues" src="https://img.shields.io/github/issues/lucianotavernard/gostack-meetapp">
+  </a>
+
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
+</p>
 
 ## 💻 Projeto
 
